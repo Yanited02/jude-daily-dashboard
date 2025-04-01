@@ -89,7 +89,6 @@ st.markdown(
 )
 
 
-
 # ---------- Simulated Modules ---------- #
 def get_wearable_data():
     return {
