@@ -34,10 +34,10 @@ st.markdown(
 
         .stTabs > div {
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             align-items: center;
             overflow: hidden;  /* Ensures tabs don't cause overflow */
-            margin-top: -5px;  /* Reduces space between the title and tabs */
+            margin-top: 0px;  /* Reduces space between the title and tabs */
         }
 
         .stTabs [data-baseweb="tab"] {
