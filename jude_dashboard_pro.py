@@ -16,15 +16,15 @@ st.markdown(
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-        html, body, [class*="css"]  {
+        html, body, [class*="css"] {
             font-family: 'Inter', sans-serif !important;
             background-color: #0e0e0e !important;
             color: #f0f0f0 !important;
-            overflow-x: hidden;
         }
 
         .main, .block-container {
             background-color: #0e0e0e !important;
+            padding: 0px !important;  /* Remove padding to reduce space */
         }
 
         .stTabs > div {
@@ -32,8 +32,9 @@ st.markdown(
             white-space: nowrap !important;
             display: flex;
             align-items: center;
-            margin-bottom: -20px; /* Reduce space under the tabs */
-            padding-bottom: 10px; /* Adjust padding for visual balance */
+            margin-bottom: 0px !important;  /* Adjust or remove bottom margin */
+            padding-bottom: 5px;  /* Reduce bottom padding */
+            border-bottom: 1px solid #444;  /* Optional border for visual separation */
         }
 
         .stTabs [data-baseweb="tab"] {
@@ -43,12 +44,12 @@ st.markdown(
             border-radius: 8px;
             font-weight: 600;
             display: inline-block;
-            margin-right: 10px;
+            margin-right: 5px;  /* Reduce space between tabs */
         }
 
         .stTabs [aria-selected="true"] {
             color: #fff;
-            border-bottom: 3px solid #00bfff;
+            border-bottom: 2px solid #00bfff;  /* Highlight for active tab */
             background-color: #1f1f1f;
         }
 
@@ -72,21 +73,22 @@ st.markdown(
             color: #ffffff;
         }
 
-        /* Scrollbars customization */
+        /* Scrollbar customization */
         ::-webkit-scrollbar {
-            height: 8px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #1a1a1a;
+            background: #333;  /* Darker track */
         }
         ::-webkit-scrollbar-thumb {
-            background-color: #00bfff;
+            background-color: #00bfff;  /* Blue thumb */
             border-radius: 10px;
         }
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 
 # ---------- Simulated Modules ---------- #
