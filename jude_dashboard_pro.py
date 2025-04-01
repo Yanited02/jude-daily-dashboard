@@ -24,17 +24,12 @@ st.markdown(
 
         .main, .block-container {
             background-color: #0e0e0e !important;
-            padding: 0px !important;  /* Remove padding to reduce space */
         }
 
         .stTabs > div {
-            overflow-x: auto !important;
             white-space: nowrap !important;
             display: flex;
             align-items: center;
-            margin-bottom: 0px !important;  /* Adjust or remove bottom margin */
-            padding-bottom: 5px;  /* Reduce bottom padding */
-            border-bottom: 1px solid #444;  /* Optional border for visual separation */
         }
 
         .stTabs [data-baseweb="tab"] {
@@ -44,12 +39,12 @@ st.markdown(
             border-radius: 8px;
             font-weight: 600;
             display: inline-block;
-            margin-right: 5px;  /* Reduce space between tabs */
+            margin-right: 10px;
         }
 
         .stTabs [aria-selected="true"] {
             color: #fff;
-            border-bottom: 2px solid #00bfff;  /* Highlight for active tab */
+            border-bottom: 3px solid #00bfff;
             background-color: #1f1f1f;
         }
 
@@ -71,18 +66,6 @@ st.markdown(
 
         .stSlider > div {
             color: #ffffff;
-        }
-
-        /* Scrollbar customization */
-        ::-webkit-scrollbar {
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #333;  /* Darker track */
-        }
-        ::-webkit-scrollbar-thumb {
-            background-color: #00bfff;  /* Blue thumb */
-            border-radius: 10px;
         }
     </style>
     """,
