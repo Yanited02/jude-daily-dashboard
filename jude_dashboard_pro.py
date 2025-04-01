@@ -6,12 +6,19 @@ import time
 # ---------- Simulated Modules ---------- #
 def get_wearable_data():
     return {
-        "Heart Rate": random.randint(58, 95),
+        "Heart Rate": random.randint(58, 125),
         "Body Temp": round(random.uniform(36.1, 37.3), 1),
         "Steps Today": random.randint(3000, 12000),
         "Readiness Score": random.randint(60, 100),
         "Sleep Duration (hrs)": round(random.uniform(6.5, 9.2), 1)
     }
+
+def analyze_heart_rate(hr, planned_schedule):
+    if hr > 110 and "rest" in planned_schedule.lower():
+        return "⚠️ Elevated heart rate on a rest day. Consider taking it easy or checking in with recovery tools."
+    elif hr > 120:
+        return "⚠️ Dangerously high heart rate detected. Make sure you're not overexerting or missing recovery."
+    return None
 
 chat_log = []
 
@@ -73,10 +80,23 @@ st.markdown("<p style='text-align: center; color: gray;'>Where performance meets
 with st.spinner("Warming up..."):
     time.sleep(2.5)
 
-# ---------- Main Dashboard ---------- #
+# ---------- Daily Overview Input ---------- #
+st.markdown("<div class='card'>", unsafe_allow_html=True)
+st.markdown("### 📆 Daily Schedule Input")
+schedule_input = st.text_area("What does your day look like today? (Training, meetings, rest?)")
+st.markdown("</div>", unsafe_allow_html=True)
+
+# ---------- Tabs ---------- #
 st.title("Jude’s Daily Dashboard")
 st.subheader("🗓️ " + datetime.now().strftime("%A, %d %B %Y"))
 matchday = st.checkbox("Matchday Mode", value=False)
+
+wearables = get_wearable_data()
+hr_warning = analyze_heart_rate(wearables['Heart Rate'], schedule_input or "")
+
+if hr_warning:
+    st.warning(hr_warning)
+
 vest_metrics = {
     "Daily Vest": {"Hydration": random.randint(70, 100), "Heart Rate": random.randint(60, 90), "Body Temp": round(random.uniform(36.5, 37.5), 1)},
     "Night Vest": {"REM Sleep %": random.randint(20, 35), "Sleep Duration": random.randint(6, 9), "Resting HR": random.randint(50, 65)},
@@ -90,7 +110,7 @@ tabs = st.tabs(["Fitness", "Routine", "Chat", "Tactics"])
 with tabs[0]:
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 🔗 Wearable Fitness Insights")
-    for key, val in get_wearable_data().items():
+    for key, val in wearables.items():
         st.write(f"**{key}:** {val}")
     st.markdown("</div>", unsafe_allow_html=True)
 
