@@ -31,7 +31,16 @@ def get_ai_reply(message):
         return "Coach: Good question — let's look at footage later."
 
 def get_youtube_suggestion():
-    return "https://www.youtube.com/watch?v=pN6JK0aYg8Y", "Modrić's off-ball movement under pressure."
+    return "https://www.youtube.com/watch?v=1XnBzZsLJXA", "Bellingham's midfield positioning and awareness."
+
+def evaluate_routine(routine_items):
+    feedback = []
+    for item in routine_items:
+        if "carb" in item.lower() or "pasta" in item.lower():
+            feedback.append("⚠️ You've had high carbs before training — try eggs or lean protein for better energy balance.")
+        if "skip" in item.lower() or "none" in item.lower():
+            feedback.append("⚠️ Missed meal or session detected — this could impact your readiness score.")
+    return feedback
 
 # ---------- UI Styling ---------- #
 st.markdown("""
@@ -48,7 +57,13 @@ st.markdown("""
             border-radius: 10px;
             border: 1px solid #3a3a3c;
         }
-        .stMarkdown hr { display: none; }
+        .stMarkdown hr, .stMarkdown div:empty {
+            display: none !important;
+        }
+        .block-container > div > div > div > div[data-testid="stVerticalBlock"]:not(:has(.st-expander)) {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -90,20 +105,22 @@ with tabs[0]:
 # -- Tab 2: Routine -- #
 with tabs[1]:
     st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.markdown("### 📋 Daily Routine")
-    routine = [
-        "Wake up 7:30AM, hydration + mobility",
-        "Breakfast: eggs, avocado toast, smoothie",
-        "Team training 10AM - 12PM",
-        "Lunch + Recovery Nap",
-        "Gym: Mobility & core work",
-        "Film review session (30 mins)",
-        "Dinner: lean protein + complex carbs",
-        "Spanish practice (Duolingo or app)",
-        "10 mins meditation + Sleep by 10:30PM"
-    ]
-    for item in routine:
+    st.markdown("### 📋 Daily Routine (Editable)")
+    user_routine = st.text_area("List your current routine items (one per line):", """Wake up 7:30AM, hydration + mobility
+Breakfast: eggs, avocado toast, smoothie
+Team training 10AM - 12PM
+Lunch + Recovery Nap
+Gym: Mobility & core work
+Film review session (30 mins)
+Dinner: lean protein + complex carbs
+Spanish practice (Duolingo or app)
+10 mins meditation + Sleep by 10:30PM""")
+    routine_lines = [line.strip() for line in user_routine.split("\n") if line.strip()]
+    for item in routine_lines:
         st.write(f"- {item}")
+    feedback = evaluate_routine(routine_lines)
+    if feedback:
+        st.warning("\n".join(feedback))
     st.markdown("</div>", unsafe_allow_html=True)
 
 # -- Tab 3: Chat -- #
