@@ -27,9 +27,10 @@ st.markdown(
         }
 
         .stTabs > div {
-            white-space: nowrap !important;
             display: flex;
+            flex-wrap: nowrap;
             align-items: center;
+            overflow: hidden;  /* Hide any overflow */
         }
 
         .stTabs [data-baseweb="tab"] {
@@ -39,7 +40,7 @@ st.markdown(
             border-radius: 8px;
             font-weight: 600;
             display: inline-block;
-            margin-right: 10px;
+            margin-right: 10px;  /* Space between tabs */
         }
 
         .stTabs [aria-selected="true"] {
