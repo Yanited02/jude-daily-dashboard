@@ -66,6 +66,11 @@ st.markdown(
         .stSlider > div {
             color: #ffffff;
         }
+
+        /* Specifically targeting the title and headers to ensure visibility */
+        h1, .reportview-container h1 {
+            color: #ffffff !important;  /* Making title white */
+        }
     </style>
     """,
     unsafe_allow_html=True
