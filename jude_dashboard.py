@@ -115,6 +115,11 @@ with tabs[3]:
     if player_notes:
         st.success("✅ Notes saved. Use this space to reflect or discuss with coaching staff.")
 
+    st.subheader("📣 Notes for Staff")
+    staff_notes = st.text_area("Write a message or request to send to the coaching staff:")
+    if staff_notes:
+        st.info("📨 This note is ready to share with your coach or analyst.")
+
 # ---------- Tab 5: Nutrition ---------- #
 with tabs[4]:
     st.subheader("🍽️ Smart Nutrition Tracker")
