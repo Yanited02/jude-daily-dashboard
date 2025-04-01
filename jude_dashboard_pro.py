@@ -3,6 +3,10 @@ from datetime import datetime
 import random
 import time
 
+# ---------- App Branding ---------- #
+APP_NAME = "FieldFocus"
+APP_TAGLINE = "Train. Think. Thrive."
+
 # ---------- Simulated Modules ---------- #
 def get_wearable_data():
     return {
@@ -38,8 +42,12 @@ def generate_alerts(sleep, hydrate, stretch, nutrition):
     return alerts
 
 # ---------- Streamlit Setup ---------- #
-st.set_page_config(page_title="PulsePoint Dashboard", layout="centered")
-st.title("👟 PulsePoint: Jude's Daily Companion")
+st.set_page_config(page_title=f"{APP_NAME} Dashboard", layout="centered")
+st.markdown(f"""
+    <h1 style='text-align: center; font-size: 3rem;'>⚽ {APP_NAME}</h1>
+    <p style='text-align: center; font-size: 1.1rem; color: gray;'>{APP_TAGLINE}</p>
+    <hr style='margin-top: -10px;'>
+""", unsafe_allow_html=True)
 
 # ---------- Tabs ---------- #
 tabs = st.tabs([
@@ -162,4 +170,4 @@ with tabs[8]:
     else:
         st.success("✅ You’re recovering like a pro. Stay consistent!")
 
-st.caption("⚽ PulsePoint – Lifestyle dashboard inspired by Jude.")
+st.caption(f"Made with ⚽ by {APP_NAME} – {APP_TAGLINE}")
