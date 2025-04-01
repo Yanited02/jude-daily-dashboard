@@ -6,65 +6,87 @@ import time
 # ---------- Simulated Modules ---------- #
 def get_wearable_data():
     return {
-        "Heart Rate": random.randint(58, 125),
+        "Heart Rate": random.randint(58, 95),
         "Body Temp": round(random.uniform(36.1, 37.3), 1),
         "Steps Today": random.randint(3000, 12000),
         "Readiness Score": random.randint(60, 100),
         "Sleep Duration (hrs)": round(random.uniform(6.5, 9.2), 1)
     }
 
-def analyze_heart_rate(hr, planned_schedule):
-    planned_schedule = planned_schedule.lower()
-    if hr > 110 and "rest" in planned_schedule:
-        return "⚠️ Elevated heart rate on a rest day. Consider taking it easy or checking in with recovery tools."
-    elif hr > 120:
-        return "⚠️ Dangerously high heart rate detected. Make sure you're not overexerting or missing recovery."
-    return None
+def get_ai_reply(message):
+    if "defend" in message.lower():
+        return "Coach: Stay tighter on the second ball and watch your positioning."
+    elif "press" in message.lower():
+        return "Coach: Initiate the press from the striker and close the midfield passing lanes."
+    else:
+        return "Coach: Good question — let's look at footage later."
 
-def evaluate_schedule_text(text):
-    feedback = []
-    text = text.lower()
-    triggers = {
-        "no breakfast": "🥣 Skipping breakfast can reduce energy levels — try oats, eggs or a fruit smoothie.",
-        "skipped breakfast": "🥣 Skipping breakfast can reduce energy levels — try oats, eggs or a fruit smoothie.",
-        "rest day and gym": "💤 Rest day detected — reduce physical load unless active recovery is planned.",
-        "late night": "😴 Late night can reduce sleep quality — consider winding down earlier.",
-        "sleep <6": "😴 Less than 6 hours of sleep might affect performance. Try winding down earlier.",
-        "no lunch": "🍗 You skipped lunch — consider a balanced protein + carb meal post-training.",
-        "junk food": "🍟 Junk food detected — swap for whole foods like grilled chicken, rice and greens.",
-        "takeaway": "🍟 Takeaway food detected — opt for home-cooked meals to stay sharp.",
-        "energy drink": "⚡ Consider limiting energy drinks. Hydrate with water or electrolytes instead.",
-        "no sleep": "🛌 Lack of sleep detected — aim for at least 7-8 hours for optimal recovery.",
-        "4 hours": "🛌 Only 4 hours sleep? Try to extend to 7-8 hours for better cognitive and physical performance."
-    }
-    for trigger, message in triggers.items():
-        if trigger in text:
-            feedback.append(message)
-    if not feedback:
-        feedback.append("✅ Looks good. Stay sharp today!")
-    return feedback
+def get_youtube_suggestion():
+    return "https://www.youtube.com/watch?v=1XnBzZsLJXA", "Bellingham's midfield positioning and awareness."
 
-# ---------- Streamlit UI ---------- #
+# ---------- Streamlit Setup ---------- #
 st.set_page_config(page_title="PulsePoint Dashboard", layout="centered")
-
 st.title("👟 PulsePoint: Jude's Daily Companion")
-st.markdown("<hr>", unsafe_allow_html=True)
 
-# Daily Plan Input
-st.subheader("📅 What's your day look like?")
-schedule_input = st.text_area("Enter your daily plan here (e.g. rest, gym, lunch, sleep...)")
-if schedule_input:
-    st.markdown("#### AI Review of Your Plan:")
-    for line in evaluate_schedule_text(schedule_input):
-        st.info(line)
+# ---------- Tabs ---------- #
+tabs = st.tabs(["Daily Info", "Chat", "Tactics", "New Features"])
 
-# Wearable Metrics & Check
-st.subheader("🩺 Wearable Check-In")
-wearables = get_wearable_data()
-for k, v in wearables.items():
-    st.write(f"**{k}:** {v}")
-hr_warning = analyze_heart_rate(wearables['Heart Rate'], schedule_input or "")
-if hr_warning:
-    st.warning(hr_warning)
+# ---------- Tab 1: Daily Info ---------- #
+with tabs[0]:
+    matchday = st.checkbox("Matchday Mode", value=False)
+    if matchday:
+        st.info("You're in Matchday Mode. Stay focused — phone use limited to key reminders.")
 
-st.caption("Built for elite performance. Stay ahead with PulsePoint.")
+    st.subheader("📅 Daily Schedule")
+    schedule_input = st.text_area("What does your day look like today? (e.g. rest, gym, nutrition, sleep...)")
+
+    st.subheader("🩺 Wearable Check-In")
+    data = get_wearable_data()
+    for k, v in data.items():
+        st.write(f"**{k}:** {v}")
+
+    if data['Heart Rate'] > 110 and "rest" in schedule_input.lower():
+        st.warning("⚠️ High heart rate detected on a rest day. Monitor closely and recover well.")
+    elif data['Heart Rate'] > 120:
+        st.warning("⚠️ Dangerously high heart rate detected. Hydrate and consider contacting a medical pro if this continues.")
+
+    st.subheader("📋 Daily Routine")
+    def get_routine():
+        return [
+            "Wake up 7:30AM, hydration + mobility",
+            "Breakfast: eggs, avocado toast, smoothie",
+            "Team training 10AM - 12PM",
+            "Lunch + Recovery Nap",
+            "Gym: Mobility & core work",
+            "Film review session (30 mins)",
+            "Dinner: lean protein + complex carbs",
+            "Spanish practice (Duolingo or app)",
+            "10 mins meditation + Sleep by 10:30PM"
+        ]
+    for item in get_routine():
+        st.write(f"- {item}")
+
+# ---------- Tab 2: Chat ---------- #
+with tabs[1]:
+    st.subheader("💬 Chat with Coach")
+    user_msg = st.text_input("Message the AI Assistant or Coach:")
+    if st.button("Send", key="chat"):
+        st.info("You: " + user_msg)
+        st.success(get_ai_reply(user_msg))
+
+# ---------- Tab 3: Tactics ---------- #
+with tabs[2]:
+    st.subheader("🎮 Tactical Insight")
+    st.info("Keep your body open when receiving under pressure.")
+
+    st.subheader("📹 Tactical Player Video")
+    link, cap = get_youtube_suggestion()
+    st.video(link)
+    st.caption(cap)
+
+# ---------- Tab 4: New Features Placeholder ---------- #
+with tabs[3]:
+    st.subheader("🚧 More Features Coming Soon")
+    st.markdown("Stay tuned for nutrition tracking, calendar views, mental prep tools, and more!")
+
+st.caption("⚽ PulsePoint – Lifestyle dashboard inspired by Jude.")
