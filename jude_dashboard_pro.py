@@ -20,6 +20,20 @@ def analyze_heart_rate(hr, planned_schedule):
         return "⚠️ Dangerously high heart rate detected. Make sure you're not overexerting or missing recovery."
     return None
 
+def evaluate_schedule_text(text):
+    feedback = []
+    if "no breakfast" in text.lower() or "skipped breakfast" in text.lower():
+        feedback.append("🥣 Skipping breakfast can reduce energy levels — try oats, eggs or a fruit smoothie.")
+    if "rest day" in text.lower() and "gym" in text.lower():
+        feedback.append("💤 Rest day detected — reduce physical load unless active recovery is planned.")
+    if "late night" in text.lower() or "sleep" in text.lower() and "<6" in text:
+        feedback.append("😴 Less than 6 hours of sleep might affect performance. Try winding down earlier.")
+    if "no lunch" in text.lower():
+        feedback.append("🍗 You skipped lunch — consider a balanced protein + carb meal post-training.")
+    if not feedback:
+        feedback.append("✅ Looks good. Stay sharp today!")
+    return feedback
+
 chat_log = []
 
 def send_message(user, msg):
@@ -84,6 +98,10 @@ with st.spinner("Warming up..."):
 st.markdown("<div class='card'>", unsafe_allow_html=True)
 st.markdown("### 📆 Daily Schedule Input")
 schedule_input = st.text_area("What does your day look like today? (Training, meetings, rest?)")
+if schedule_input:
+    suggestions = evaluate_schedule_text(schedule_input)
+    for tip in suggestions:
+        st.info(tip)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------- Tabs ---------- #
@@ -93,7 +111,6 @@ matchday = st.checkbox("Matchday Mode", value=False)
 
 wearables = get_wearable_data()
 hr_warning = analyze_heart_rate(wearables['Heart Rate'], schedule_input or "")
-
 if hr_warning:
     st.warning(hr_warning)
 
