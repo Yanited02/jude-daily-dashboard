@@ -32,8 +32,8 @@ st.markdown(
             white-space: nowrap !important;
             display: flex;
             align-items: center;
-            scrollbar-width: thin;
-            scrollbar-color: #00bfff #1a1a1a;
+            margin-bottom: -20px; /* Reduce space under the tabs */
+            padding-bottom: 10px; /* Adjust padding for visual balance */
         }
 
         .stTabs [data-baseweb="tab"] {
@@ -87,6 +87,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 # ---------- Simulated Modules ---------- #
