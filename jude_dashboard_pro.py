@@ -76,20 +76,6 @@ def get_wearable_data():
         "Sleep Duration (hrs)": round(random.uniform(6.5, 9.2), 1)
     }
 
-def get_ai_reply(message):
-    if "defend" in message.lower():
-        return "Coach: Stay tighter on the second ball and watch your positioning."
-    elif "press" in message.lower():
-        return "Coach: Initiate the press from the striker and close the midfield passing lanes."
-    elif "tired" in message.lower():
-        return "Coach: Prioritize rest and hydrate. No shame in adjusting the load."
-    elif "recovery" in message.lower():
-        return "Coach: Active recovery or ice bath today — avoid overload."
-    elif "nutrition" in message.lower():
-        return "Coach: Aim for protein + complex carbs post-training."
-    else:
-        return "Coach: Good question — let's look at footage later."
-
 def get_youtube_suggestion():
     return "https://www.youtube.com/watch?v=1XnBzZsLJXA", "Bellingham's midfield positioning and awareness."
 
@@ -113,9 +99,88 @@ st.markdown(f"""
     <hr style='margin-top: -10px;'>
 """, unsafe_allow_html=True)
 
-# ---------- AI Prompt & Response ---------- #
-st.markdown("### 🤖 Ask the Coach (AI-Powered)")
-ai_input = st.text_input("Ask a tactical, physical or mental health question:", key="ai_prompt")
-if ai_input:
-    ai_response = get_ai_reply(ai_input)
-    st.success(ai_response)
+# ---------- Tab Layout ---------- #
+tabs = st.tabs([
+    "Daily Info", "Routine", "Tactics", "Nutrition", "Calendar", "Mental Prep", "Emotion Check", "Recovery"
+])
+
+with tabs[0]:
+    st.subheader("📅 Daily Schedule")
+    schedule_input = st.text_area("What does your day look like today?")
+    st.subheader("🩺 Wearable Check-In")
+    data = get_wearable_data()
+    for k, v in data.items():
+        st.write(f"**{k}:** {v}")
+
+with tabs[1]:
+    st.subheader("📋 Daily Routine")
+    st.markdown("""
+    - Wake up 7:30AM, hydration + mobility
+    - Breakfast: eggs, avocado toast, smoothie
+    - Team training 10AM - 12PM
+    - Lunch + Recovery Nap
+    - Gym: Mobility & core work
+    - Film review session (30 mins)
+    - Dinner: lean protein + complex carbs
+    - Spanish practice (Duolingo or app)
+    - 10 mins meditation + Sleep by 10:30PM
+    """)
+
+with tabs[2]:
+    st.subheader("🎮 Tactical Insight")
+    st.info("Keep your body open when receiving under pressure.")
+    link, cap = get_youtube_suggestion()
+    st.video(link)
+    st.caption(cap)
+    st.text_area("🧠 Player Notes", "")
+    st.text_area("📣 Notes for Staff", "")
+
+with tabs[3]:
+    st.subheader("🍽️ Smart Nutrition Tracker")
+    meal = st.text_input("What did you eat today?")
+    if meal:
+        if any(x in meal.lower() for x in ["chips", "pizza", "fried"]):
+            st.warning("⚠️ High-fat foods detected — try switching to grilled options.")
+        elif any(x in meal.lower() for x in ["chicken", "eggs", "smoothie", "salad"]):
+            st.success("✅ Great choice! Balanced nutrition fuels top performance.")
+        else:
+            st.info("🍴 Nutrition logged.")
+
+with tabs[4]:
+    st.subheader("🗓️ Weekly Calendar")
+    st.text_input("Monday", "Training")
+    st.text_input("Tuesday", "Gym + Recovery")
+    st.text_input("Wednesday", "Tactical Drills")
+
+with tabs[5]:
+    st.subheader("🧘 Guided Mental Preparation")
+    focus_type = st.selectbox("Pick your focus today:", ["Visualization", "Breathing", "Gratitude"])
+    if focus_type == "Visualization":
+        st.info("Picture your perfect pass, tackle, or goal.")
+    elif focus_type == "Breathing":
+        st.info("Try box breathing: inhale 4s, hold 4s, exhale 4s, hold 4s. Repeat 4x.")
+    else:
+        st.info("Think of 3 things you’re grateful for.")
+
+with tabs[6]:
+    st.subheader("😌 Emotional Check-In")
+    mood = st.radio("How are you feeling?", ["🔥 On fire", "🙂 Focused", "😴 Tired", "😟 Nervous", "😢 Low"])
+    if mood == "😟 Nervous":
+        st.info("Reach out to family or teammates for support.")
+    elif mood == "😢 Low":
+        st.warning("It's okay to not feel 100%. Reflect, rest, and reset.")
+    elif mood == "😴 Tired":
+        st.warning("Energy seems low. Hydrate and rest early.")
+    else:
+        st.success("You're in a good headspace. Keep it up!")
+
+with tabs[7]:
+    st.subheader("🛌 Recovery Tracker")
+    hours_slept = st.slider("How many hours did you sleep?", 0, 12, 8)
+    did_stretch = st.checkbox("Did you stretch today?")
+    did_hydrate = st.checkbox("Have you drunk 2L+ of water?")
+    alerts = generate_alerts(hours_slept, did_hydrate, did_stretch, meal if 'meal' in locals() else "")
+    for a in alerts:
+        st.warning(a)
+    if not alerts:
+        st.success("✅ You’re recovering like a pro. Stay consistent!")
