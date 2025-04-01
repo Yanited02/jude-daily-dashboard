@@ -7,6 +7,14 @@ import time
 APP_NAME = "FieldFocus"
 APP_TAGLINE = "Train. Think. Thrive."
 
+# ---------- Streamlit Setup ---------- #
+st.set_page_config(page_title=f"{APP_NAME} Dashboard", layout="centered")
+st.markdown(f"""
+    <h1 style='text-align: center; font-size: 3rem; color: white;'>⚽ {APP_NAME}</h1>
+    <p style='text-align: center; font-size: 1.1rem; color: #aaa;'>{APP_TAGLINE}</p>
+    <hr style='margin-top: -10px;'>
+""", unsafe_allow_html=True)
+
 # ---------- Custom Dark Styling ---------- #
 st.markdown(
     """
@@ -85,15 +93,6 @@ def generate_alerts(sleep, hydrate, stretch, nutrition):
     if nutrition and any(x in nutrition.lower() for x in ["pizza", "chips", "fried"]):
         alerts.append("⚠️ Junk food logged. Try cleaner options tomorrow.")
     return alerts
-
-# ---------- Streamlit Setup ---------- #
-st.set_page_config(page_title=f"{APP_NAME} Dashboard", layout="centered")
-st.markdown(f"""
-    <h1 style='text-align: center; font-size: 3rem; color: white;'>⚽ {APP_NAME}</h1>
-    <p style='text-align: center; font-size: 1.1rem; color: #aaa;'>{APP_TAGLINE}</p>
-    <hr style='margin-top: -10px;'>
-""", unsafe_allow_html=True)
-
 
 
 # ---------- Tabs ---------- #
