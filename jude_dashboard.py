@@ -7,45 +7,53 @@ import time
 APP_NAME = "FieldFocus"
 APP_TAGLINE = "Train. Think. Thrive."
 
-# ---------- Custom Dark Styling ---------- #
+# ---------- Custom Professional Styling ---------- #
 st.markdown(
     """
     <style>
-        body {
-            background-color: #0e0e0e;
-            color: #f0f0f0;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        html, body, [class*="css"] {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f4;
+            color: #111;
         }
+
         .main, .block-container {
-            background-color: #0e0e0e;
+            background-color: #f4f4f4;
         }
+
         .stTabs [data-baseweb="tab"] {
-            color: #ccc;
-            background-color: #1a1a1a;
+            color: #333;
+            background-color: #e6e6e6;
             padding: 0.5rem;
             border-radius: 6px;
+            font-weight: 600;
         }
         .stTabs [aria-selected="true"] {
-            color: #fff;
-            border-bottom: 3px solid #00bfff;
-            background-color: #1f1f1f;
+            color: #111;
+            border-bottom: 3px solid #007aff;
+            background-color: #fff;
         }
-        .stTextInput > div > div > input {
-            background-color: #1f1f1f;
-            color: white;
-        }
+
+        .stTextInput > div > div > input,
         .stTextArea > div > textarea {
-            background-color: #1f1f1f;
-            color: white;
+            background-color: #fff;
+            color: #000;
+            font-family: 'Inter', sans-serif;
         }
+
         .stButton > button {
-            background-color: #00bfff;
+            background-color: #007aff;
             color: white;
             border: none;
             padding: 10px 18px;
             border-radius: 10px;
+            font-weight: bold;
         }
+
         .stSlider > div {
-            color: white;
+            color: #000;
         }
     </style>
     """,
@@ -89,8 +97,8 @@ def generate_alerts(sleep, hydrate, stretch, nutrition):
 # ---------- Streamlit Setup ---------- #
 st.set_page_config(page_title=f"{APP_NAME} Dashboard", layout="centered")
 st.markdown(f"""
-    <h1 style='text-align: center; font-size: 3rem; color: white;'>⚽ {APP_NAME}</h1>
-    <p style='text-align: center; font-size: 1.1rem; color: #aaa;'>{APP_TAGLINE}</p>
+    <h1 style='text-align: center; font-size: 3rem; color: #111;'>⚽ {APP_NAME}</h1>
+    <p style='text-align: center; font-size: 1.1rem; color: #555;'>{APP_TAGLINE}</p>
     <hr style='margin-top: -10px;'>
 """, unsafe_allow_html=True)
 
