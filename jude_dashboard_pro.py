@@ -44,7 +44,27 @@ def evaluate_schedule_text(text):
         feedback.append("✅ Looks good. Stay sharp today!")
     return feedback
 
-# NOTE: Keep the rest of your existing Streamlit UI and logic as-is
-# This section is optimized and ready to plug into your main app.
-# Make sure you're not repeating imports or long delays elsewhere
-# and reduce use of long-running time.sleep or unnecessary re-renders.
+# ---------- Streamlit UI ---------- #
+st.set_page_config(page_title="PulsePoint Dashboard", layout="centered")
+
+st.title("👟 PulsePoint: Jude's Daily Companion")
+st.markdown("<hr>", unsafe_allow_html=True)
+
+# Daily Plan Input
+st.subheader("📅 What's your day look like?")
+schedule_input = st.text_area("Enter your daily plan here (e.g. rest, gym, lunch, sleep...)")
+if schedule_input:
+    st.markdown("#### AI Review of Your Plan:")
+    for line in evaluate_schedule_text(schedule_input):
+        st.info(line)
+
+# Wearable Metrics & Check
+st.subheader("🩺 Wearable Check-In")
+wearables = get_wearable_data()
+for k, v in wearables.items():
+    st.write(f"**{k}:** {v}")
+hr_warning = analyze_heart_rate(wearables['Heart Rate'], schedule_input or "")
+if hr_warning:
+    st.warning(hr_warning)
+
+st.caption("Built for elite performance. Stay ahead with PulsePoint.")
