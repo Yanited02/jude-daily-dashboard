@@ -8,35 +8,44 @@ st.set_page_config(page_title="Jude's Daily Dashboard", layout="wide")
 st.markdown("""
     <style>
         body {
-            background-color: #f0f2f6;
-            color: #111;
+            background-color: #121212;
+            color: #ffffff;
         }
         .main, .block-container {
-            padding: 2rem 1rem;
+            padding: 1rem 0.5rem;
+            background-color: #121212;
         }
         .card {
-            background-color: #ffffff;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background-color: #1e1e1e;
+            border-radius: 14px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
         .stButton > button {
-            background-color: #1a1a1a;
+            background-color: #007aff;
             color: white;
             border-radius: 10px;
             padding: 10px 20px;
             font-size: 16px;
+            border: none;
         }
         .stProgress > div > div {
             background-color: #34c759;
         }
         h1, h2, h3, h4, h5, h6 {
-            font-weight: 600;
+            color: #ffffff;
         }
-        .stExpanderHeader {
-            font-size: 16px;
-            font-weight: 500;
+        .stTextInput > div > input,
+        .stSelectbox > div > div,
+        .stTextArea textarea {
+            background-color: #2c2c2e !important;
+            color: white !important;
+            border-radius: 10px;
+            border: 1px solid #3a3a3c;
+        }
+        .stMarkdown hr {
+            display: none;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -98,7 +107,7 @@ def get_jude_demo_plan():
         "10 mins meditation + Sleep by 10:30PM"
     ]
 
-# ---------- UI Layout ---------- #
+# ---------- Layout ---------- #
 st.title("Jude’s Daily Dashboard")
 st.subheader("🗓️ " + datetime.now().strftime("%A, %d %B %Y"))
 matchday = st.checkbox("Matchday Mode", value=False)
@@ -106,7 +115,6 @@ metrics = generate_vest_metrics()
 
 if matchday:
     st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.markdown("### ⚠️ Matchday Mode Active")
     st.info("You're in Matchday Mode. Stay focused — phone use limited to key reminders.")
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -170,8 +178,4 @@ with st.container():
     st.info(get_tactical_tip())
     st.markdown("</div>", unsafe_allow_html=True)
 
-# Footer
-st.markdown("---")
-st.caption("⚽ Designed for elite focus. Built for mobile. Inspired by Jude.")
-st.markdown("Made with ❤️ by [Your Name]")
-st.markdown("Connect with me on [LinkedIn](https://www.linkedin.com/in/yourprofile)")
+st.caption("⚽ Designed for mobile. Built for focus. Inspired by Jude.")
