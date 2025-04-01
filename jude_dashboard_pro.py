@@ -25,7 +25,7 @@ st.markdown(
 
         .main, .block-container {
             background-color: #0e0e0e !important;
-            padding: 0px !important;  /* Removes padding around the content area */
+            padding: -5px !important;  /* Removes padding around the content area */
         }
 
         header {  /* Targets the page header */
