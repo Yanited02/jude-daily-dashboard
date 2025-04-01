@@ -7,6 +7,51 @@ import time
 APP_NAME = "FieldFocus"
 APP_TAGLINE = "Train. Think. Thrive."
 
+# ---------- Custom Dark Styling ---------- #
+st.markdown(
+    """
+    <style>
+        body {
+            background-color: #0e0e0e;
+            color: #f0f0f0;
+        }
+        .main, .block-container {
+            background-color: #0e0e0e;
+        }
+        .stTabs [data-baseweb="tab"] {
+            color: #ccc;
+            background-color: #1a1a1a;
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+        .stTabs [aria-selected="true"] {
+            color: #fff;
+            border-bottom: 3px solid #00bfff;
+            background-color: #1f1f1f;
+        }
+        .stTextInput > div > div > input {
+            background-color: #1f1f1f;
+            color: white;
+        }
+        .stTextArea > div > textarea {
+            background-color: #1f1f1f;
+            color: white;
+        }
+        .stButton > button {
+            background-color: #00bfff;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+        }
+        .stSlider > div {
+            color: white;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # ---------- Simulated Modules ---------- #
 def get_wearable_data():
     return {
@@ -44,10 +89,11 @@ def generate_alerts(sleep, hydrate, stretch, nutrition):
 # ---------- Streamlit Setup ---------- #
 st.set_page_config(page_title=f"{APP_NAME} Dashboard", layout="centered")
 st.markdown(f"""
-    <h1 style='text-align: center; font-size: 3rem;'>⚽ {APP_NAME}</h1>
-    <p style='text-align: center; font-size: 1.1rem; color: gray;'>{APP_TAGLINE}</p>
+    <h1 style='text-align: center; font-size: 3rem; color: white;'>⚽ {APP_NAME}</h1>
+    <p style='text-align: center; font-size: 1.1rem; color: #aaa;'>{APP_TAGLINE}</p>
     <hr style='margin-top: -10px;'>
 """, unsafe_allow_html=True)
+
 
 # ---------- Tabs ---------- #
 tabs = st.tabs([
