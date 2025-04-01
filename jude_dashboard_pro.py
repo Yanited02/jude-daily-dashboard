@@ -91,18 +91,36 @@ with tabs[3]:
 
 # ---------- Tab 5: Nutrition ---------- #
 with tabs[4]:
-    st.subheader("🍽️ Nutrition Suggestions")
-    st.markdown("Focus on whole foods. Sample pre-training: banana + peanut butter toast. Post-training: chicken, rice, veg.")
+    st.subheader("🍽️ Smart Nutrition Tracker")
+    meal = st.text_input("What did you eat today (e.g. cereal, chicken, chips, smoothie)?")
+    if meal:
+        if any(x in meal.lower() for x in ["chips", "pizza", "fried"]):
+            st.warning("⚠️ High-fat foods detected — try switching to grilled options and whole carbs.")
+        elif any(x in meal.lower() for x in ["chicken", "eggs", "smoothie", "salad", "oats"]):
+            st.success("✅ Great choice! Balanced nutrition fuels top performance.")
+        else:
+            st.info("🍴 Nutrition logged. Keep variety and hydration in check!")
 
 # ---------- Tab 6: Calendar ---------- #
 with tabs[5]:
-    st.subheader("🗓️ Weekly Calendar View")
-    st.markdown("Coming soon: Full training + match calendar.")
+    st.subheader("🗓️ Weekly Calendar")
+    st.markdown("Enter your key weekly events")
+    monday = st.text_input("Monday", "Training")
+    tuesday = st.text_input("Tuesday", "Gym + Recovery")
+    wednesday = st.text_input("Wednesday", "Tactical Drills")
+    st.markdown(f"**Your Week:**\n- Monday: {monday}\n- Tuesday: {tuesday}\n- Wednesday: {wednesday}")
 
 # ---------- Tab 7: Mental Prep ---------- #
 with tabs[6]:
-    st.subheader("🧘 Mental Preparation")
-    st.markdown("Start your day with 10 mins deep breathing or visualization of the match.")
+    st.subheader("🧘 Guided Mental Preparation")
+    st.markdown("Take a breath. Visualize yourself owning the pitch.")
+    focus_type = st.selectbox("Pick your focus today:", ["Visualization", "Breathing", "Gratitude"])
+    if focus_type == "Visualization":
+        st.info("Picture your perfect pass, tackle, or goal. Replay it mentally with calmness.")
+    elif focus_type == "Breathing":
+        st.info("Try box breathing: inhale 4s, hold 4s, exhale 4s, hold 4s. Repeat 4x.")
+    else:
+        st.info("Think of 3 things you’re grateful for — gratitude strengthens mindset.")
 
 # ---------- Tab 8: Emotion Check ---------- #
 with tabs[7]:
@@ -112,10 +130,20 @@ with tabs[7]:
         st.info("Reach out to family or teammates for support. Confidence comes from routine.")
     elif mood == "😢 Low":
         st.warning("It's okay to not feel 100%. Reflect, rest, and reset. You're still elite.")
+    elif mood == "😴 Tired":
+        st.warning("Energy seems low. Prioritize hydration, stretching, and early sleep.")
+    else:
+        st.success("You're in a good headspace. Keep it up!")
 
 # ---------- Tab 9: Recovery ---------- #
 with tabs[8]:
-    st.subheader("🛌 Recovery Tips")
-    st.markdown("Stretch, hydrate, and aim for 8+ hours of sleep. Use compression boots or cold plunges on tough days.")
+    st.subheader("🛌 Personalized Recovery Tracker")
+    hours_slept = st.slider("How many hours did you sleep last night?", 0, 12, 8)
+    did_stretch = st.checkbox("Did you stretch today?")
+    did_hydrate = st.checkbox("Have you drunk 2L+ of water today?")
+    if hours_slept < 7 or not did_stretch or not did_hydrate:
+        st.warning("⚠️ Recovery not optimal — improve sleep, mobility, and hydration where possible.")
+    else:
+        st.success("✅ You’re recovering like a pro. Stay consistent!")
 
 st.caption("⚽ PulsePoint – Lifestyle dashboard inspired by Jude.")
