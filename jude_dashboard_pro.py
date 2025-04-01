@@ -20,17 +20,24 @@ st.markdown(
             font-family: 'Inter', sans-serif !important;
             background-color: #0e0e0e !important;
             color: #f0f0f0 !important;
+            overflow: hidden;  /* Prevents any scrolling outside the content area */
         }
 
         .main, .block-container {
             background-color: #0e0e0e !important;
+            padding: 0px !important;  /* Removes padding around the content area */
+        }
+
+        header {  /* Targets the page header */
+            color: #ffffff !important;  /* Ensures header text is white */
         }
 
         .stTabs > div {
             display: flex;
             flex-wrap: nowrap;
             align-items: center;
-            overflow: hidden;  /* Hide any overflow */
+            overflow: hidden;  /* Ensures tabs don't cause overflow */
+            margin-top: -5px;  /* Reduces space between the title and tabs */
         }
 
         .stTabs [data-baseweb="tab"] {
@@ -40,7 +47,7 @@ st.markdown(
             border-radius: 8px;
             font-weight: 600;
             display: inline-block;
-            margin-right: 10px;  /* Space between tabs */
+            margin-right: 10px;  /* Controls spacing between tabs */
         }
 
         .stTabs [aria-selected="true"] {
