@@ -22,6 +22,17 @@ def send_message(user, msg):
 def get_chat_history():
     return chat_log[-5:]
 
+def get_ai_reply(message):
+    if "defend" in message.lower():
+        return "Coach: Stay tighter on the second ball and watch your positioning."
+    elif "press" in message.lower():
+        return "Coach: Initiate the press from the striker and close the midfield passing lanes."
+    else:
+        return "Coach: Good question — let's look at footage later."
+
+def get_youtube_suggestion():
+    return "https://www.youtube.com/watch?v=pN6JK0aYg8Y", "Modrić's off-ball movement under pressure."
+
 # ---------- UI Styling ---------- #
 st.markdown("""
     <style>
@@ -57,20 +68,17 @@ vest_metrics = {
     "Relax Vest": {"Stress Level": random.randint(1, 10), "Breathing Rate": random.randint(12, 18), "Recovery Score": random.randint(60, 100)}
 }
 
-if matchday:
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
-    st.info("You're in Matchday Mode. Stay focused — phone use limited to key reminders.")
-    st.markdown("</div>", unsafe_allow_html=True)
+# ---------- Tabs ---------- #
+tabs = st.tabs(["Fitness", "Routine", "Chat", "Tactics"])
 
-# ---------- Sections ---------- #
-with st.container():
+# -- Tab 1: Fitness -- #
+with tabs[0]:
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 🔗 Wearable Fitness Insights")
     for key, val in get_wearable_data().items():
         st.write(f"**{key}:** {val}")
     st.markdown("</div>", unsafe_allow_html=True)
 
-with st.container():
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 🦾 Tri-Vest Metrics")
     for vest, data in vest_metrics.items():
@@ -79,7 +87,8 @@ with st.container():
                 st.write(f"**{k}:** {v}")
     st.markdown("</div>", unsafe_allow_html=True)
 
-with st.container():
+# -- Tab 2: Routine -- #
+with tabs[1]:
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 📋 Daily Routine")
     routine = [
@@ -97,17 +106,21 @@ with st.container():
         st.write(f"- {item}")
     st.markdown("</div>", unsafe_allow_html=True)
 
-with st.container():
+# -- Tab 3: Chat -- #
+with tabs[2]:
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 💬 Pulse Chat")
     user_input = st.text_input("Message Coach or AI Assistant:")
     if st.button("Send"):
         send_message("Jude", user_input)
+        reply = get_ai_reply(user_input)
+        send_message("Coach", reply)
     for timestamp, user, msg in get_chat_history():
         st.markdown(f"`{timestamp}` **{user}**: {msg}")
     st.markdown("</div>", unsafe_allow_html=True)
 
-with st.container():
+# -- Tab 4: Tactics -- #
+with tabs[3]:
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("### 🎮 Tactical Tip")
     st.info(random.choice([
@@ -117,6 +130,13 @@ with st.container():
         "Switch play quickly to exploit space.",
         "Anticipate second balls and stay alert."
     ]))
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown("### 📹 Player Comparison Video")
+    yt_link, caption = get_youtube_suggestion()
+    st.video(yt_link)
+    st.caption(caption)
     st.markdown("</div>", unsafe_allow_html=True)
 
 st.caption("⚽ PulsePoint – Elite lifestyle tracking inspired by Jude.")
