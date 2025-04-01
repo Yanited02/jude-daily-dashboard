@@ -14,7 +14,8 @@ def get_wearable_data():
     }
 
 def analyze_heart_rate(hr, planned_schedule):
-    if hr > 110 and "rest" in planned_schedule.lower():
+    planned_schedule = planned_schedule.lower()
+    if hr > 110 and "rest" in planned_schedule:
         return "⚠️ Elevated heart rate on a rest day. Consider taking it easy or checking in with recovery tools."
     elif hr > 120:
         return "⚠️ Dangerously high heart rate detected. Make sure you're not overexerting or missing recovery."
@@ -23,22 +24,27 @@ def analyze_heart_rate(hr, planned_schedule):
 def evaluate_schedule_text(text):
     feedback = []
     text = text.lower()
-    if "no breakfast" in text or "skipped breakfast" in text:
-        feedback.append("🥣 Skipping breakfast can reduce energy levels — try oats, eggs or a fruit smoothie.")
-    if "rest day" in text and "gym" in text:
-        feedback.append("💤 Rest day detected — reduce physical load unless active recovery is planned.")
-    if "late night" in text or ("sleep" in text and "<6" in text):
-        feedback.append("😴 Less than 6 hours of sleep might affect performance. Try winding down earlier.")
-    if "no lunch" in text:
-        feedback.append("🍗 You skipped lunch — consider a balanced protein + carb meal post-training.")
-    if "junk food" in text or "takeaway" in text:
-        feedback.append("🍟 Junk food detected — swap for whole foods like grilled chicken, rice and greens.")
-    if "energy drink" in text:
-        feedback.append("⚡ Consider limiting energy drinks. Hydrate with water or electrolytes instead.")
-    if "no sleep" in text or "4 hours" in text:
-        feedback.append("🛌 Lack of sleep detected — aim for at least 7-8 hours for optimal recovery.")
+    triggers = {
+        "no breakfast": "🥣 Skipping breakfast can reduce energy levels — try oats, eggs or a fruit smoothie.",
+        "skipped breakfast": "🥣 Skipping breakfast can reduce energy levels — try oats, eggs or a fruit smoothie.",
+        "rest day and gym": "💤 Rest day detected — reduce physical load unless active recovery is planned.",
+        "late night": "😴 Late night can reduce sleep quality — consider winding down earlier.",
+        "sleep <6": "😴 Less than 6 hours of sleep might affect performance. Try winding down earlier.",
+        "no lunch": "🍗 You skipped lunch — consider a balanced protein + carb meal post-training.",
+        "junk food": "🍟 Junk food detected — swap for whole foods like grilled chicken, rice and greens.",
+        "takeaway": "🍟 Takeaway food detected — opt for home-cooked meals to stay sharp.",
+        "energy drink": "⚡ Consider limiting energy drinks. Hydrate with water or electrolytes instead.",
+        "no sleep": "🛌 Lack of sleep detected — aim for at least 7-8 hours for optimal recovery.",
+        "4 hours": "🛌 Only 4 hours sleep? Try to extend to 7-8 hours for better cognitive and physical performance."
+    }
+    for trigger, message in triggers.items():
+        if trigger in text:
+            feedback.append(message)
     if not feedback:
         feedback.append("✅ Looks good. Stay sharp today!")
     return feedback
 
-# (The rest of the code remains unchanged)
+# NOTE: Keep the rest of your existing Streamlit UI and logic as-is
+# This section is optimized and ready to plug into your main app.
+# Make sure you're not repeating imports or long delays elsewhere
+# and reduce use of long-running time.sleep or unnecessary re-renders.
