@@ -20,7 +20,7 @@ st.markdown(
             font-family: 'Inter', sans-serif !important;
             background-color: #0e0e0e !important;
             color: #f0f0f0 !important;
-            overflow-x: auto;
+            overflow-x: hidden;
         }
 
         .main, .block-container {
@@ -30,6 +30,10 @@ st.markdown(
         .stTabs > div {
             overflow-x: auto !important;
             white-space: nowrap !important;
+            display: flex;
+            align-items: center;
+            scrollbar-width: thin;
+            scrollbar-color: #00bfff #1a1a1a;
         }
 
         .stTabs [data-baseweb="tab"] {
@@ -39,6 +43,7 @@ st.markdown(
             border-radius: 8px;
             font-weight: 600;
             display: inline-block;
+            margin-right: 10px;
         }
 
         .stTabs [aria-selected="true"] {
@@ -67,9 +72,16 @@ st.markdown(
             color: #ffffff;
         }
 
-        /* Specifically targeting the title and headers to ensure visibility */
-        h1, .reportview-container h1 {
-            color: #ffffff !important;  /* Making title white */
+        /* Scrollbars customization */
+        ::-webkit-scrollbar {
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #00bfff;
+            border-radius: 10px;
         }
     </style>
     """,
