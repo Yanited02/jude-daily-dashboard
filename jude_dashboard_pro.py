@@ -27,15 +27,20 @@ st.markdown(
             background-color: #0e0e0e !important;
         }
 
+        .stTabs > div {
+            overflow-x: auto !important;
+            white-space: nowrap !important;
+        }
+
         .stTabs [data-baseweb="tab"] {
             color: #ccc;
             background-color: #1a1a1a;
             padding: 0.6rem;
             border-radius: 8px;
             font-weight: 600;
-            white-space: nowrap;
-            overflow-x: auto;
+            display: inline-block;
         }
+
         .stTabs [aria-selected="true"] {
             color: #fff;
             border-bottom: 3px solid #00bfff;
