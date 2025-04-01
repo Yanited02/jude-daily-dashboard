@@ -3,57 +3,63 @@ from datetime import datetime
 import random
 import time
 
+# ✅ Page config must be the first Streamlit command
+st.set_page_config(page_title="FieldFocus Dashboard", layout="centered")
+
 # ---------- App Branding ---------- #
 APP_NAME = "FieldFocus"
 APP_TAGLINE = "Train. Think. Thrive."
 
-# ---------- Streamlit Setup ---------- #
-st.set_page_config(page_title=f"{APP_NAME} Dashboard", layout="centered")
-st.markdown(f"""
-    <h1 style='text-align: center; font-size: 3rem; color: white;'>⚽ {APP_NAME}</h1>
-    <p style='text-align: center; font-size: 1.1rem; color: #aaa;'>{APP_TAGLINE}</p>
-    <hr style='margin-top: -10px;'>
-""", unsafe_allow_html=True)
-
-# ---------- Custom Dark Styling ---------- #
+# ---------- Custom Professional Styling ---------- #
 st.markdown(
     """
     <style>
-        body {
-            background-color: #0e0e0e;
-            color: #f0f0f0;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        html, body, [class*="css"]  {
+            font-family: 'Inter', sans-serif !important;
+            background-color: #f2f2f2 !important;
+            color: #0d0d0d !important;
+            overflow-x: auto;
         }
+
         .main, .block-container {
-            background-color: #0e0e0e;
+            background-color: #f2f2f2 !important;
         }
+
         .stTabs [data-baseweb="tab"] {
-            color: #ccc;
-            background-color: #1a1a1a;
-            padding: 0.5rem;
-            border-radius: 6px;
+            color: #333;
+            background-color: #e0e0e0;
+            padding: 0.6rem;
+            border-radius: 8px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow-x: auto;
         }
         .stTabs [aria-selected="true"] {
-            color: #fff;
-            border-bottom: 3px solid #00bfff;
-            background-color: #1f1f1f;
+            color: #000;
+            border-bottom: 3px solid #0077ff;
+            background-color: #ffffff;
         }
-        .stTextInput > div > div > input {
-            background-color: #1f1f1f;
-            color: white;
-        }
+
+        .stTextInput > div > div > input,
         .stTextArea > div > textarea {
-            background-color: #1f1f1f;
-            color: white;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: 'Inter', sans-serif !important;
         }
+
         .stButton > button {
-            background-color: #00bfff;
+            background-color: #0077ff;
             color: white;
             border: none;
             padding: 10px 18px;
-            border-radius: 10px;
+            border-radius: 12px;
+            font-weight: 600;
         }
+
         .stSlider > div {
-            color: white;
+            color: #000000;
         }
     </style>
     """,
@@ -75,6 +81,12 @@ def get_ai_reply(message):
         return "Coach: Stay tighter on the second ball and watch your positioning."
     elif "press" in message.lower():
         return "Coach: Initiate the press from the striker and close the midfield passing lanes."
+    elif "tired" in message.lower():
+        return "Coach: Prioritize rest and hydrate. No shame in adjusting the load."
+    elif "recovery" in message.lower():
+        return "Coach: Active recovery or ice bath today — avoid overload."
+    elif "nutrition" in message.lower():
+        return "Coach: Aim for protein + complex carbs post-training."
     else:
         return "Coach: Good question — let's look at footage later."
 
@@ -94,136 +106,16 @@ def generate_alerts(sleep, hydrate, stretch, nutrition):
         alerts.append("⚠️ Junk food logged. Try cleaner options tomorrow.")
     return alerts
 
+# ---------- Streamlit Header ---------- #
+st.markdown(f"""
+    <h1 style='text-align: center; font-size: 3rem; color: #000;'>⚽ {APP_NAME}</h1>
+    <p style='text-align: center; font-size: 1.1rem; color: #444;'>{APP_TAGLINE}</p>
+    <hr style='margin-top: -10px;'>
+""", unsafe_allow_html=True)
 
-# ---------- Tabs ---------- #
-tabs = st.tabs([
-    "Daily Info", "Routine", "Chat", "Tactics",
-    "Nutrition", "Calendar", "Mental Prep", "Emotion Check", "Recovery"
-])
-
-# ---------- Tab 1: Daily Info ---------- #
-with tabs[0]:
-    matchday = st.checkbox("Matchday Mode", value=False)
-    if matchday:
-        st.info("You're in Matchday Mode. Stay focused — phone use limited to key reminders.")
-
-    st.subheader("📅 Daily Schedule")
-    schedule_input = st.text_area("What does your day look like today? (e.g. rest, gym, nutrition, sleep...)")
-
-    st.subheader("🩺 Wearable Check-In")
-    data = get_wearable_data()
-    for k, v in data.items():
-        st.write(f"**{k}:** {v}")
-
-    if data['Heart Rate'] > 110 and "rest" in schedule_input.lower():
-        st.warning("⚠️ High heart rate detected on a rest day. Monitor closely and recover well.")
-    elif data['Heart Rate'] > 120:
-        st.warning("⚠️ Dangerously high heart rate detected. Hydrate and consider contacting a medical pro if this continues.")
-
-# ---------- Tab 2: Routine ---------- #
-with tabs[1]:
-    st.subheader("📋 Daily Routine")
-    def get_routine():
-        return [
-            "Wake up 7:30AM, hydration + mobility",
-            "Breakfast: eggs, avocado toast, smoothie",
-            "Team training 10AM - 12PM",
-            "Lunch + Recovery Nap",
-            "Gym: Mobility & core work",
-            "Film review session (30 mins)",
-            "Dinner: lean protein + complex carbs",
-            "Spanish practice (Duolingo or app)",
-            "10 mins meditation + Sleep by 10:30PM"
-        ]
-    for item in get_routine():
-        st.write(f"- {item}")
-
-# ---------- Tab 3: Chat ---------- #
-with tabs[2]:
-    st.subheader("💬 Chat with Coach")
-    user_msg = st.text_input("Message the AI Assistant or Coach:")
-    if st.button("Send", key="chat"):
-        st.info("You: " + user_msg)
-        st.success(get_ai_reply(user_msg))
-
-# ---------- Tab 4: Tactics ---------- #
-with tabs[3]:
-    st.subheader("🎮 Tactical Insight")
-    st.info("Keep your body open when receiving under pressure.")
-
-    st.subheader("📹 Tactical Player Video")
-    link, cap = get_youtube_suggestion()
-    st.video(link)
-    st.caption(cap)
-
-    st.subheader("🧠 Player Notes")
-    player_notes = st.text_area("Your thoughts on this tactic or video (for your own or staff reference):")
-    if player_notes:
-        st.success("✅ Notes saved. Use this space to reflect or discuss with coaching staff.")
-
-    st.subheader("📣 Notes for Staff")
-    staff_notes = st.text_area("Write a message or request to send to the coaching staff:")
-    if staff_notes:
-        st.info("📨 This note is ready to share with your coach or analyst.")
-
-# ---------- Tab 5: Nutrition ---------- #
-with tabs[4]:
-    st.subheader("🍽️ Smart Nutrition Tracker")
-    meal = st.text_input("What did you eat today (e.g. cereal, chicken, chips, smoothie)?")
-    if meal:
-        if any(x in meal.lower() for x in ["chips", "pizza", "fried"]):
-            st.warning("⚠️ High-fat foods detected — try switching to grilled options and whole carbs.")
-        elif any(x in meal.lower() for x in ["chicken", "eggs", "smoothie", "salad", "oats"]):
-            st.success("✅ Great choice! Balanced nutrition fuels top performance.")
-        else:
-            st.info("🍴 Nutrition logged. Keep variety and hydration in check!")
-
-# ---------- Tab 6: Calendar ---------- #
-with tabs[5]:
-    st.subheader("🗓️ Weekly Calendar")
-    st.markdown("Enter your key weekly events")
-    monday = st.text_input("Monday", "Training")
-    tuesday = st.text_input("Tuesday", "Gym + Recovery")
-    wednesday = st.text_input("Wednesday", "Tactical Drills")
-    st.markdown(f"**Your Week:**\n- Monday: {monday}\n- Tuesday: {tuesday}\n- Wednesday: {wednesday}")
-
-# ---------- Tab 7: Mental Prep ---------- #
-with tabs[6]:
-    st.subheader("🧘 Guided Mental Preparation")
-    st.markdown("Take a breath. Visualize yourself owning the pitch.")
-    focus_type = st.selectbox("Pick your focus today:", ["Visualization", "Breathing", "Gratitude"])
-    if focus_type == "Visualization":
-        st.info("Picture your perfect pass, tackle, or goal. Replay it mentally with calmness.")
-    elif focus_type == "Breathing":
-        st.info("Try box breathing: inhale 4s, hold 4s, exhale 4s, hold 4s. Repeat 4x.")
-    else:
-        st.info("Think of 3 things you’re grateful for — gratitude strengthens mindset.")
-
-# ---------- Tab 8: Emotion Check ---------- #
-with tabs[7]:
-    st.subheader("😌 Emotional Check-In")
-    mood = st.radio("How are you feeling?", ["🔥 On fire", "🙂 Focused", "😴 Tired", "😟 Nervous", "😢 Low"])
-    if mood == "😟 Nervous":
-        st.info("Reach out to family or teammates for support. Confidence comes from routine.")
-    elif mood == "😢 Low":
-        st.warning("It's okay to not feel 100%. Reflect, rest, and reset. You're still elite.")
-    elif mood == "😴 Tired":
-        st.warning("Energy seems low. Prioritize hydration, stretching, and early sleep.")
-    else:
-        st.success("You're in a good headspace. Keep it up!")
-
-# ---------- Tab 9: Recovery ---------- #
-with tabs[8]:
-    st.subheader("🛌 Personalized Recovery Tracker")
-    hours_slept = st.slider("How many hours did you sleep last night?", 0, 12, 8)
-    did_stretch = st.checkbox("Did you stretch today?")
-    did_hydrate = st.checkbox("Have you drunk 2L+ of water today?")
-
-    alerts = generate_alerts(hours_slept, did_hydrate, did_stretch, meal if 'meal' in locals() else "")
-    if alerts:
-        for a in alerts:
-            st.warning(a)
-    else:
-        st.success("✅ You’re recovering like a pro. Stay consistent!")
-
-st.caption(f"Made with ⚽ by {APP_NAME} – {APP_TAGLINE}")
+# ---------- AI Prompt & Response ---------- #
+st.markdown("### 🤖 Ask the Coach (AI-Powered)")
+ai_input = st.text_input("Ask a tactical, physical or mental health question:", key="ai_prompt")
+if ai_input:
+    ai_response = get_ai_reply(ai_input)
+    st.success(ai_response)
