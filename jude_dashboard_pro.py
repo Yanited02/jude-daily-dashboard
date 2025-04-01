@@ -10,7 +10,7 @@ st.set_page_config(page_title="FieldFocus Dashboard", layout="centered")
 APP_NAME = "FieldFocus"
 APP_TAGLINE = "Train. Think. Thrive."
 
-# ---------- Custom Professional Styling ---------- #
+# ---------- Custom Dark Styling ---------- #
 st.markdown(
     """
     <style>
@@ -18,18 +18,18 @@ st.markdown(
 
         html, body, [class*="css"]  {
             font-family: 'Inter', sans-serif !important;
-            background-color: #f2f2f2 !important;
-            color: #0d0d0d !important;
+            background-color: #0e0e0e !important;
+            color: #f0f0f0 !important;
             overflow-x: auto;
         }
 
         .main, .block-container {
-            background-color: #f2f2f2 !important;
+            background-color: #0e0e0e !important;
         }
 
         .stTabs [data-baseweb="tab"] {
-            color: #333;
-            background-color: #e0e0e0;
+            color: #ccc;
+            background-color: #1a1a1a;
             padding: 0.6rem;
             border-radius: 8px;
             font-weight: 600;
@@ -37,20 +37,20 @@ st.markdown(
             overflow-x: auto;
         }
         .stTabs [aria-selected="true"] {
-            color: #000;
-            border-bottom: 3px solid #0077ff;
-            background-color: #ffffff;
+            color: #fff;
+            border-bottom: 3px solid #00bfff;
+            background-color: #1f1f1f;
         }
 
         .stTextInput > div > div > input,
         .stTextArea > div > textarea {
-            background-color: #ffffff;
-            color: #000000;
+            background-color: #1f1f1f;
+            color: #ffffff;
             font-family: 'Inter', sans-serif !important;
         }
 
         .stButton > button {
-            background-color: #0077ff;
+            background-color: #00bfff;
             color: white;
             border: none;
             padding: 10px 18px;
@@ -59,12 +59,13 @@ st.markdown(
         }
 
         .stSlider > div {
-            color: #000000;
+            color: #ffffff;
         }
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 # ---------- Simulated Modules ---------- #
 def get_wearable_data():
