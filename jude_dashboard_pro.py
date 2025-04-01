@@ -2,8 +2,6 @@ import streamlit as st
 from datetime import datetime
 import random
 import time
-import speech_recognition as sr
-import tempfile
 
 # ---------- Simulated Modules ---------- #
 def get_wearable_data():
@@ -38,20 +36,6 @@ def generate_alerts(sleep, hydrate, stretch, nutrition):
     if nutrition and any(x in nutrition.lower() for x in ["pizza", "chips", "fried"]):
         alerts.append("⚠️ Junk food logged. Try cleaner options tomorrow.")
     return alerts
-
-# ---------- Voice Input Helper ---------- #
-def recognize_voice():
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        st.info("Listening... please speak now.")
-        audio = recognizer.listen(source)
-        try:
-            text = recognizer.recognize_google(audio)
-            return text
-        except sr.UnknownValueError:
-            return "Voice not recognized. Try again."
-        except sr.RequestError:
-            return "Speech service unavailable."
 
 # ---------- Streamlit Setup ---------- #
 st.set_page_config(page_title="PulsePoint Dashboard", layout="centered")
@@ -163,11 +147,6 @@ with tabs[7]:
         st.warning("Energy seems low. Prioritize hydration, stretching, and early sleep.")
     else:
         st.success("You're in a good headspace. Keep it up!")
-
-    st.subheader("🎙️ Voice Check-In")
-    if st.button("🎤 Start Voice Input"):
-        voice_result = recognize_voice()
-        st.write("🗣️ You said:", voice_result)
 
 # ---------- Tab 9: Recovery ---------- #
 with tabs[8]:
