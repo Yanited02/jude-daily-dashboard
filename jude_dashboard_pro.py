@@ -29,7 +29,10 @@ st.set_page_config(page_title="PulsePoint Dashboard", layout="centered")
 st.title("👟 PulsePoint: Jude's Daily Companion")
 
 # ---------- Tabs ---------- #
-tabs = st.tabs(["Daily Info", "Chat", "Tactics", "New Features"])
+tabs = st.tabs([
+    "Daily Info", "Routine", "Chat", "Tactics",
+    "Nutrition", "Calendar", "Mental Prep", "Emotion Check", "Recovery"
+])
 
 # ---------- Tab 1: Daily Info ---------- #
 with tabs[0]:
@@ -50,6 +53,8 @@ with tabs[0]:
     elif data['Heart Rate'] > 120:
         st.warning("⚠️ Dangerously high heart rate detected. Hydrate and consider contacting a medical pro if this continues.")
 
+# ---------- Tab 2: Routine ---------- #
+with tabs[1]:
     st.subheader("📋 Daily Routine")
     def get_routine():
         return [
@@ -66,16 +71,16 @@ with tabs[0]:
     for item in get_routine():
         st.write(f"- {item}")
 
-# ---------- Tab 2: Chat ---------- #
-with tabs[1]:
+# ---------- Tab 3: Chat ---------- #
+with tabs[2]:
     st.subheader("💬 Chat with Coach")
     user_msg = st.text_input("Message the AI Assistant or Coach:")
     if st.button("Send", key="chat"):
         st.info("You: " + user_msg)
         st.success(get_ai_reply(user_msg))
 
-# ---------- Tab 3: Tactics ---------- #
-with tabs[2]:
+# ---------- Tab 4: Tactics ---------- #
+with tabs[3]:
     st.subheader("🎮 Tactical Insight")
     st.info("Keep your body open when receiving under pressure.")
 
@@ -84,9 +89,33 @@ with tabs[2]:
     st.video(link)
     st.caption(cap)
 
-# ---------- Tab 4: New Features Placeholder ---------- #
-with tabs[3]:
-    st.subheader("🚧 More Features Coming Soon")
-    st.markdown("Stay tuned for nutrition tracking, calendar views, mental prep tools, and more!")
+# ---------- Tab 5: Nutrition ---------- #
+with tabs[4]:
+    st.subheader("🍽️ Nutrition Suggestions")
+    st.markdown("Focus on whole foods. Sample pre-training: banana + peanut butter toast. Post-training: chicken, rice, veg.")
+
+# ---------- Tab 6: Calendar ---------- #
+with tabs[5]:
+    st.subheader("🗓️ Weekly Calendar View")
+    st.markdown("Coming soon: Full training + match calendar.")
+
+# ---------- Tab 7: Mental Prep ---------- #
+with tabs[6]:
+    st.subheader("🧘 Mental Preparation")
+    st.markdown("Start your day with 10 mins deep breathing or visualization of the match.")
+
+# ---------- Tab 8: Emotion Check ---------- #
+with tabs[7]:
+    st.subheader("😌 Emotional Check-In")
+    mood = st.radio("How are you feeling?", ["🔥 On fire", "🙂 Focused", "😴 Tired", "😟 Nervous", "😢 Low"])
+    if mood == "😟 Nervous":
+        st.info("Reach out to family or teammates for support. Confidence comes from routine.")
+    elif mood == "😢 Low":
+        st.warning("It's okay to not feel 100%. Reflect, rest, and reset. You're still elite.")
+
+# ---------- Tab 9: Recovery ---------- #
+with tabs[8]:
+    st.subheader("🛌 Recovery Tips")
+    st.markdown("Stretch, hydrate, and aim for 8+ hours of sleep. Use compression boots or cold plunges on tough days.")
 
 st.caption("⚽ PulsePoint – Lifestyle dashboard inspired by Jude.")
